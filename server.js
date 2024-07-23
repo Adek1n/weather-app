@@ -1,4 +1,3 @@
-require("dotenv").config();
 const e=require("http");
 const f=require("fs");
 console.log("Server Active");
