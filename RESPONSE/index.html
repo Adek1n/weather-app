@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Applet</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js" type="module"></script>
+    <script src="app.js" type="module"></script>
+</head>
+<body>
+    
+    <div class="wrapper">
+        <form class="api-control">
+            <input type="text" class="api-request" placeholder="Enter City">
+            <button type="submit" class="api-submit">Get Weather</button>
+        </form>
+        <div class="weather-display hide">
+            <div class="weather-location">
+                Miami
+            </div>
+            <div class="weather-temperature">
+                60.3F
+            </div>
+            <div class="weather-humidity">
+                Humidty: 81
+            </div>
+            <div class="weather-clouds">
+                overcast clouds
+            </div>
+            <div class="weather-icon">
+                <img src="https://openweathermap.org/img/wn/04d.png">
+            </div>
+            
+        </div>
+        <div class="message-display hide">
+            CITY NOT FOUND
+        </div>
+    </div>
+</body>
+</html>
