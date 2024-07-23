@@ -5,8 +5,6 @@ const weather_display=document.querySelector(".weather-display");
 const message_display=document.querySelector(".message-display");
 
 
-
-
 async function getWeather(city){
     city=String(city).toLowerCase();
     try{
