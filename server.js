@@ -1,12 +1,10 @@
 require("dotenv").config();
 const e=require("http");
 const f=require("fs");
-
 const app=e.createServer((req,res)=>{
     const url=req.url;
     switch(url){
         case "/styles.css":
-            res.writeHead(200,{'content-type':'text/css'});
             f.readFile(`RESPONSE/styles.css`,"utf8",(err,data)=>{
                 if(err){
                     console.error(err);
