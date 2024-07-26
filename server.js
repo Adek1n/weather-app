@@ -1,40 +1,41 @@
-require("dotenv").config();
-const e=require("http");
-const f=require("fs");
-const app=e.createServer((req,res)=>{
-    const url=req.url;
-    switch(url){
-        case "/styles.css":
-            f.readFile(`RESPONSE/styles.css`,"utf8",(err,data)=>{
-                if(err){
-                    console.error(err);
-                }
-                res.end(data);
-            })
-            break;
-        case "/":
-            f.readFile("RESPONSE/index.html","utf8",(err,data)=>{
-                if(err){
-                    console.error(err);
-                }
-                res.end(data);
-            })
-            break;
-        case "/config.js":
-            res.end(`const config={
-                MY_API_KEY:"${process.env.MY_API_KEY}"
-                }`);
-            break;
-        case "/app.js":
-            f.readFile(`RESPONSE/app.js`,"utf8",(err,data)=>{
-                if(err){
-                    console.error(err);
-                }
-                res.end(data);
-            })
-            break;
-        default:
-            break;
-    }
-});
-app.listen(process.env.port||3000);
+import * as dotenv from "dotenv/config";
+import * as e from "http";
+import * as f from "fs/promises";
+const startServer=async ()=>{
+    const files=await Promise.all(
+        (await f.readdir("./RESPONSe","utf-8")).map (async (v)=>{
+            return f.readFile(`./RESPONSE/${v}`,"utf8");
+       })
+    )
+  
+    const app=e.createServer((req,res)=>{ 
+        const url=req.url;
+        switch(url){
+            case "/styles.css":
+                res.writeHead(200,{'content-type':'text/css'});
+                res.end(files[3]);
+                break;
+            case "/":
+                res.writeHead(200,{'content-type':'text/html'});
+                res.end(files[2]);
+                break;
+            case "/config.js":
+                res.writeHead(200,{'content-type':'text/javascript'});
+                res.end(`const config={
+                    MY_API_KEY:"${process.env.MY_API_KEY}"
+                    }`);
+                break;
+            case "/app.js":
+                res.writeHead(200,{'content-type':'text/javascript'});
+                res.end(files[0]);
+                break;
+            default:
+                break;
+        }
+    });
+    app.listen(process.env.port||3000,()=>{
+        console.log("Server is listening");
+    });
+}
+
+startServer();
