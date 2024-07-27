@@ -1,4 +1,3 @@
-const api_key=config.MY_API_KEY;
 const api_control=document.querySelector(".api-control");
 const api_request=document.querySelector(".api-request");
 const weather_display=document.querySelector(".weather-display");
@@ -9,7 +8,7 @@ const message_display=document.querySelector(".message-display");
 async function getWeather(city){
     city=String(city).toLowerCase();
     try{
-        const fetched=await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric`);
+        const fetched=await fetch(`/api/v1/query?city=${city}`);
         const jsonData=await fetched.json();
         return jsonData;
     }
