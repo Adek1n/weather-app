@@ -3,7 +3,7 @@ import * as e from "http";
 import * as f from "fs/promises";
 const startServer=async ()=>{
     const files=await Promise.all(
-        (await f.readdir("./RESPONSe","utf-8")).map (async (v)=>{
+        (await f.readdir("./RESPONSE","utf-8")).map (async (v)=>{
             return f.readFile(`./RESPONSE/${v}`,"utf8");
        })
     )
