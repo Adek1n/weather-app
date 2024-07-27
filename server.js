@@ -13,11 +13,11 @@ const startServer=async ()=>{
         switch(url){
             case "/styles.css":
                 res.writeHead(200,{'content-type':'text/css'});
-                res.end(files[3]);
+                res.end(files[2]);
                 break;
             case "/":
                 res.writeHead(200,{'content-type':'text/html'});
-                res.end(files[2]);
+                res.end(files[1]);
                 break;
             case "/config.js":
                 res.writeHead(200,{'content-type':'text/javascript'});
