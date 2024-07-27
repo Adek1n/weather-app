@@ -1,41 +1,30 @@
 import * as dotenv from "dotenv/config";
-import * as e from "http";
-import * as f from "fs/promises";
-const startServer=async ()=>{
-    const files=await Promise.all(
-        (await f.readdir("./RESPONSE","utf-8")).map (async (v)=>{
-            return f.readFile(`./RESPONSE/${v}`,"utf8");
-       })
-    )
-  
-    const app=e.createServer((req,res)=>{ 
-        const url=req.url;
-        switch(url){
-            case "/styles.css":
-                res.writeHead(200,{'content-type':'text/css'});
-                res.end(files[2]);
-                break;
-            case "/":
-                res.writeHead(200,{'content-type':'text/html'});
-                res.end(files[1]);
-                break;
-            case "/config.js":
-                res.writeHead(200,{'content-type':'text/javascript'});
-                res.end(`const config={
-                    MY_API_KEY:"${process.env.MY_API_KEY}"
-                    }`);
-                break;
-            case "/app.js":
-                res.writeHead(200,{'content-type':'text/javascript'});
-                res.end(files[0]);
-                break;
-            default:
-                break;
-        }
-    });
-    app.listen(process.env.port||3000,()=>{
-        console.log("Server is listening");
-    });
-}
+import express from "express";
 
-startServer();
+const api_key=process.env.MY_API_KEY;
+const app=express();
+
+app.use(express.static("./RESPONSE"));
+
+app.get("/api/v1/query",async (req,res)=>{
+    const {city}=req.query;
+    if(city){
+        const fetched=await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric`);
+        const jsonData=await fetched.json();
+        return res.status(200).json(jsonData);
+    }
+    return res.status(404).json({
+        cod:404,
+        message:"city not found"
+    })
+})
+
+app.all("/*",(req,res)=>{
+    return res.status(404).send("This resource cannot be found");
+})
+
+
+
+app.listen(process.env.port||3000,()=>{
+    console.log("Server is listening");
+});
